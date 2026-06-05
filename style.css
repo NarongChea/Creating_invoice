@@ -184,7 +184,7 @@ body {
 .invoice {
   background: var(--white);
   width: 794px;
-  min-height: 1123px;
+  min-height: 880px;
   box-shadow: var(--shadow);
   border-radius: 4px;
   overflow: hidden;

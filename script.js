@@ -190,3 +190,19 @@ document.addEventListener('keydown', e => {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeCustomerModal();
 });
+function saveForMobile() {
+  // Hide buttons or UI before printing
+  document.querySelectorAll('.no-print').forEach(el => {
+    el.style.display = 'none';
+  });
+
+  // Trigger phone print (user can choose "Save as PDF")
+  window.print();
+
+  // Show back UI after print
+  setTimeout(() => {
+    document.querySelectorAll('.no-print').forEach(el => {
+      el.style.display = '';
+    });
+  }, 1000);
+}
