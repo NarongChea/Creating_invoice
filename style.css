@@ -1,0 +1,392 @@
+/* ============================================================
+   INVOICE APP — style.css  (redesigned)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --red:    #C0392B;
+  --yellow: #FFE900;
+  --total:  #FFD000;
+  --dark:   #1C1C1E;
+  --mid:    #444;
+  --line:   #D0D5DD;
+  --blue:   #1A73E8;
+  --green:  #1A8A4A;
+  --bg:     #F2F4F7;
+  --white:  #FFFFFF;
+  --khmer:  'Noto Sans Khmer', sans-serif;
+  --sans:   'DM Sans', sans-serif;
+  --shadow: 0 8px 40px rgba(0,0,0,0.14);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--dark);
+  -webkit-font-smoothing: antialiased;
+}
+
+.khmer { font-family: var(--khmer); }
+
+/* ============================================================
+   TOOLBAR
+   ============================================================ */
+.toolbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  background: var(--dark);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+.toolbar-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 20px;
+}
+
+.toolbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.toolbar-actions { display: flex; gap: 8px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: filter 0.15s, transform 0.1s;
+}
+.btn:active { transform: scale(0.96); }
+.btn:hover  { filter: brightness(1.1); }
+
+.btn-customer { background: #3A3A4A; color: #ddd; }
+.btn-add      { background: #27AE60; color: #fff; }
+.btn-save     { background: var(--red); color: #fff; }
+.btn-cancel   { background: #eee; color: var(--dark); }
+.btn-apply    { background: var(--blue); color: #fff; }
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+}
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--white);
+  border-radius: 12px;
+  width: 440px;
+  max-width: 96vw;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  overflow: hidden;
+  animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.modal-header h2 { font-size: 16px; font-weight: 700; }
+.modal-close {
+  background: none; border: none; cursor: pointer;
+  font-size: 16px; color: #888; padding: 2px 6px;
+  border-radius: 4px; transition: background 0.15s;
+}
+.modal-close:hover { background: #f0f0f0; }
+
+.modal-body { padding: 18px 22px; display: flex; flex-direction: column; gap: 14px; }
+
+.field-group { display: flex; flex-direction: column; gap: 5px; }
+.field-group label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--mid);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.field-group .hint { font-weight: 400; text-transform: none; color: #aaa; font-size: 10.5px; }
+
+.field-group input {
+  padding: 9px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 7px;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--dark);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field-group input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(26,115,232,0.12);
+}
+.khmer-input { font-family: var(--khmer); }
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 14px 22px 18px;
+  border-top: 1px solid var(--line);
+}
+
+/* ============================================================
+   PAGE WRAPPER
+   ============================================================ */
+.page-wrapper {
+  padding: 72px 20px 48px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ============================================================
+   INVOICE
+   ============================================================ */
+.invoice {
+  background: var(--white);
+  width: 794px;
+  min-height: 1123px;
+  box-shadow: var(--shadow);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 56px; /* room for footer */
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.inv-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 22px 12px;
+  gap: 18px;
+  border-bottom: 2.5px solid var(--dark);
+  background: #FAFAFA;
+}
+
+.logo-box {
+  flex-shrink: 0;
+  width: 150px;
+  border: 1.5px solid #C8CDD6;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #dde3ec;
+}
+.logo-box img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+
+.company-block { flex: 1; text-align: center; }
+
+.co-name {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--red);
+  line-height: 1.15;
+}
+.co-phone { font-size: 12.5px; color: var(--dark); margin-top: 3px; font-weight: 500; }
+.co-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-top: 5px;
+  border-bottom: 1.5px solid var(--dark);
+  padding-bottom: 1px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   CLIENT GRID
+   ============================================================ */
+.client-grid {
+  display: flex;
+  justify-content: space-between;
+  border: 1.5px solid var(--dark);
+  margin: 10px 14px;
+  padding: 8px 12px;
+  border-radius: 2px;
+}
+
+.client-col { display: flex; flex-direction: column; gap: 4px; }
+.client-col-right { text-align: right; align-items: flex-end; }
+
+.cfield {
+  display: flex;
+  align-items: baseline;
+  flex-direction: row;
+  gap: 7px;
+  font-size: 11.5px;
+}
+.client-col-right .cfield {  }
+
+.cl { font-weight: 700; white-space: nowrap; min-width: 64px; }
+.cv {
+  color: var(--dark);
+  font-family: var(--khmer);
+  font-size: 11.5px;
+  min-width: 100px;
+}
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.inv-table {
+  width: calc(100% - 28px);
+  margin: 4px 14px;
+  border-collapse: collapse;
+  font-size: 11.5px;
+}
+
+.inv-table th {
+  background: var(--dark);
+  color: var(--white);
+  font-family: var(--sans);
+  font-weight: 600;
+  padding: 6px 8px;
+  text-align: center;
+  border: 1px solid #3a3a3a;
+  letter-spacing: 0.3px;
+}
+
+.inv-table td {
+  border: 1px solid #D4D9E2;
+  padding: 5px 8px;
+  vertical-align: middle;
+  outline: none;
+  min-height: 26px;
+  transition: background 0.1s;
+}
+.inv-table td:focus { background: #EEF4FF; border-color: var(--blue); }
+
+.th-no, .tc-no   { width: 42px; text-align: center; }
+.th-content, .tc-content { font-family: var(--khmer); color: var(--blue); }
+.th-size, .tc-size { width: 85px; text-align: center; }
+.th-price, .tc-price { width: 85px; text-align: center; }
+.th-act, .tc-act  { width: 46px; text-align: center; border: none !important; background: transparent !important; }
+
+/* summary */
+.sum-row td {
+  background: var(--yellow);
+  font-weight: 700;
+  text-align: center;
+}
+.sum-addbtn { background: var(--yellow) !important; text-align: left !important; padding-left: 8px !important; }
+.sum-label { text-align: right !important; padding-right: 12px !important; background: var(--yellow) !important; }
+.sum-val   { background: var(--yellow) !important; min-width: 80px; }
+.total-row .sum-label,
+.total-row .sum-val { background: var(--total) !important; }
+
+/* small buttons inside table */
+.inline-add {
+  background: #27AE60; color: #fff;
+  padding: 3px 10px; font-size: 11px;
+  border: none; border-radius: 4px; cursor: pointer;
+  font-family: var(--sans); font-weight: 600;
+}
+.del-btn {
+  background: #e74c3c; color: #fff;
+  border: none; border-radius: 3px;
+  cursor: pointer; font-size: 11px;
+  width: 22px; height: 22px;
+  line-height: 1; padding: 0;
+}
+
+/* ============================================================
+   NOTES
+   ============================================================ */
+.notes-wrap { margin: 12px 14px 6px; }
+.notes-head { color: var(--red); font-weight: 700; font-size: 12px; margin-bottom: 5px; }
+.note {
+  color: var(--green); font-size: 11.5px;
+  line-height: 1.65; outline: none;
+  padding: 1px 3px;
+  border-bottom: 1px dashed transparent;
+}
+.note:focus { border-bottom-color: var(--green); background: #F0FFF4; }
+.note-add-btn { margin-top: 6px; background: #2980b9; }
+
+/* ============================================================
+   SIGNATURES
+   ============================================================ */
+.sig-row {
+  display: flex;
+  justify-content: space-around;
+  margin: 24px 14px 12px;
+  gap: 20px;
+}
+.sig-block {
+  flex: 1; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.sig-title { font-size: 11px; font-weight: 600; color: var(--dark); }
+.sig-img { max-width: 140px; max-height: 66px; object-fit: contain; }
+.sig-line { width: 180px; border-bottom: 1.5px solid var(--dark); margin-top: 4px; }
+.sig-role { font-size: 11px; font-weight: 600; color: var(--dark); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.inv-footer {
+  background: var(--dark);
+  color: var(--white);
+  text-align: center;
+  padding: 9px 14px;
+  font-size: 10.5px;
+  line-height: 1.75;
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+}
+.inv-footer .khmer { font-family: var(--khmer); }
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+@media print {
+  body { background: white; }
+  .toolbar, .no-print { display: none !important; }
+  .page-wrapper { padding: 0; }
+  .invoice { box-shadow: none; width: 100%; }
+}
